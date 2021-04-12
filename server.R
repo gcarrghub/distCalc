@@ -583,7 +583,7 @@ shinyServer(function(input, output, session){
         result[result<0] <- 0
         result
       }
-      fullInteg <- integrate(splineFUN,lower = 0,upper = max(CurveOBJ$x))$value
+      origAUC <- fullInteg <- integrate(splineFUN,lower = 0,upper = max(CurveOBJ$x))$value
       print(c(fullInteg=fullInteg))
       #rescale
       CurveOBJ$y <- CurveOBJ$y/fullInteg
@@ -621,7 +621,7 @@ shinyServer(function(input, output, session){
         abline(v=(pctl.95),lty=2)
         abline(v=(pctl.99),lty=3)
       })
-      pctlDF <- data.frame(pctl.90=pctl.90,pctl.95=pctl.95,pctl.99=pctl.99)
+      pctlDF <- data.frame(AUC=origAUC,pctl.90=pctl.90,pctl.95=pctl.95,pctl.99=pctl.99)
       print(pctlDF)
       finalDT <- as.datatable(formattable(pctlDF,
                                            #align =c("r","l"),
