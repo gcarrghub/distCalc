@@ -500,36 +500,7 @@ shinyServer(function(input, output, session){
       print("SSD plotting")
       #print(testData)
       #req(input$doGrays)
-      {
-        outputData <- testData[,c("x.axis","y.axis")]
-        print("USE DT TO FORMAT")
-        #output$DTtable <- renderDT(outputData)
-
-        #options below turn off the search field ,options = list(dom = 't'))
-        #but, that also disables scroll so not using now.
-        outputDT <- as.datatable(formattable(outputData),
-                                     #class = 'row-border stripe hover compact nowrap',
-                                     class = 'stripe compact',
-                                     #escape = FALSE,
-                                     options = list(columnDefs = list(list(className = 'dt-right', targets = "_all")),
-                                                    #autoWidth = TRUE,
-                                                    pageLength = 5, info = FALSE,
-                                                    lengthMenu = list(c(5,10, -1), c("5","10", "All")),
-                                                    scrollX = TRUE, scrollY = FALSE,
-                                                    paging = TRUE, ordering = FALSE,
-                                                    searching = FALSE))
-      }
-      #%>%
-      #  DT::formatRound(columns = 2,digits = roundTo)
-      #if(FALSE)outputDT <- DT::datatable(outputDT,
-      #                          class = 'row-border stripe hover compact nowrap',
-      #                          rownames = FALSE,
-      #                          autoHideNavigation = TRUE, escape =FALSE) %>%
-      #formatStyle(columns = "Species",
-      #            target="cell",
-      #            fontWeight = styleEqual(1:nrow(outputData), rep("bold",nrow(outputData)))) %>%
-      #DT::formatRound(columns = 2,digits = roundTo)
-      output$DTtable <- DT::renderDT(outputDT)
+      outputData <- testData[,c("x.axis","y.axis")]
       
       #this is same as earlier, but change rows to 5 instead of 10 after preview is clicked
       outputDT.Raw <- as.datatable(formattable(rvs$inputDF),
@@ -587,6 +558,19 @@ shinyServer(function(input, output, session){
       print(c(fullInteg=fullInteg))
       #rescale
       CurveOBJ$y <- CurveOBJ$y/fullInteg
+      outputDT <- as.datatable(formattable(CurveOBJ),
+                               #class = 'row-border stripe hover compact nowrap',
+                               class = 'stripe compact',
+                               #escape = FALSE,
+                               options = list(columnDefs = list(list(className = 'dt-right', targets = "_all")),
+                                              #autoWidth = TRUE,
+                                              pageLength = 5, info = FALSE,
+                                              lengthMenu = list(c(5,10, -1), c("5","10", "All")),
+                                              scrollX = TRUE, scrollY = FALSE,
+                                              paging = TRUE, ordering = FALSE,
+                                              searching = FALSE))
+      output$DTtable <- DT::renderDT(outputDT)
+      
       #repeat integral (this should be very close to 1)
       #redo spline on rescaled data
       splineOBJ <- smooth.spline(x = CurveOBJ$x,y = CurveOBJ$y,spar = 0.05)
