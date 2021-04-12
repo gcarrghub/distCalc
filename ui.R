@@ -133,7 +133,7 @@ shinyUI(
                     tabPanel("Output",
                              h3("Input data:"),
                              DTOutput("DTtableRaw",width = "75%"),
-                             h3("Analysis data:"),
+                             h3("Scaled data:"),
                              DTOutput("DTtable",width = "75%"),
                              h3(""),
                              conditionalPanel(condition="output.setupComplete",
